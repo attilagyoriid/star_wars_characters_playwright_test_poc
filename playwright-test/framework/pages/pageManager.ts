@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
-import { BasePage } from './basePage';
+import { BasePage } from './BasePage';
 import { RegistrationPage } from './registrationPage';
-import { StarWarsHomePage } from './starWarsHomePage';
+import { StarWarsHomePage } from './StarWarsHomePage';
 
 export class PageManager extends BasePage {
   private readonly _registrationPage: RegistrationPage;

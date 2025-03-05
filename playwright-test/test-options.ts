@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { PageManager } from '@pages/pageManager';
+import { PageManager } from '@pages/PageManager';
 
 export interface TestOptions {
   globalsQaURL: string;

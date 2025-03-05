@@ -4,7 +4,7 @@ import { getEnv } from '../config/env/env';
 import { createLogger } from 'winston';
 import { options } from '../logger/logger';
 import { devices } from 'playwright';
-import { PageManager } from '../pages/pageManager';
+import { PageManager } from '../pages/PageManager';
 import { CustomWorld } from '../support/world';
 import { Browser } from '@playwright/test';
 import * as fs from 'fs-extra';
