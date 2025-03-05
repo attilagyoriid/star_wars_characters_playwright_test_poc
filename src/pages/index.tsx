@@ -51,7 +51,9 @@ export default function Home() {
     axios
       .get("/characterImages.json")
       .then((response) => setCharacterImages(response.data))
-      .catch((error) => console.error("Error loading character images:", error));
+      .catch((error) =>
+        console.error("Error loading character images:", error)
+      );
   }, []);
 
   const handleCharacterChange = (
@@ -95,8 +97,8 @@ export default function Home() {
                   <CharacterCard character={selectedCharacter} />
                 </div>
                 <div className={styles.characterImageContainer}>
-                  {showImage && (
-                    getImageSrc(selectedCharacter.name) ? (
+                  {showImage &&
+                    (getImageSrc(selectedCharacter.name) ? (
                       <Image
                         src={getImageSrc(selectedCharacter.name)}
                         alt={selectedCharacter.name}
@@ -106,8 +108,7 @@ export default function Home() {
                       />
                     ) : (
                       <p className={styles.noImage}>No Image Available</p>
-                    )
-                  )}
+                    ))}
                 </div>
               </div>
               <button onClick={handleShowImageClick}>Show Image</button>

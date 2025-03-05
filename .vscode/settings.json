@@ -1,0 +1,4 @@
+{
+  "cucumberautocomplete.steps": ["../playwright-test/tests/**/steps/*.ts"],
+  "cucumberautocomplete.strictGherkinCompletion": true
+}
