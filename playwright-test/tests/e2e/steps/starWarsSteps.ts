@@ -6,6 +6,7 @@ const { Before } = require('@cucumber/cucumber');
 
 Given('I am on the Star Wars home page', async function (this: CustomWorld) {
   await this.pageManager.starWarsHomePage.visitPage();
+  await this.pageManager.starWarsHomePage.waitForLoadState('domcontentloaded', 40000);
 });
 
 When('I select {string} from the list', async function (this: CustomWorld, characterName: string) {
