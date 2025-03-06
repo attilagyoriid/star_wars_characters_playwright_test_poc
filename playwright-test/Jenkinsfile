@@ -3,41 +3,63 @@ pipeline {
         docker {
             image 'mcr.microsoft.com/playwright'
             args '--ipc=host'
+            reuseNode true
         }
     }
 
     environment {
+        HOME = '.'
         CI = 'true'
         TEST_DIR = 'playwright-test'
     }
 
     stages {
         stage('Checkout Code') {
+            
             steps {
+                withStepLogging('Checkout') {
                 git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
+                }
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
+                withStepLogging('Checkout') {
+                    dir("${env.TEST_DIR}") {
+                        sh 'npm ci'
+                    }
+                 }
+            }
+        }
+
+        stage('Install Playwright') {
+            steps {
+                withStepLogging('Playwright Install') {
+                    dir("${env.TEST_DIR}") {
+                        sh 'npm install'
+                        sh 'npx playwright install'
+                     }
+                }
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-                dir("${env.TEST_DIR}") {
-                    sh 'npm install'
-                    sh 'npx playwright install'
-                    sh 'npm run test'
+                withStepLogging('Playwright Tests') {
+                    dir("${env.TEST_DIR}") {
+                        sh 'npm run test'
+                    }
                 }
             }
         }
 
         stage('Publish Playwright Report') {
             steps {
-                 dir("${env.TEST_DIR}") {
-                    sh 'npx playwright show-report'
+                withStepLogging('Publish Playwright Report') {
+                    dir("${env.TEST_DIR}") {
+                        sh 'npx playwright show-report'
+                    }
                 }
             }
         }
@@ -63,4 +85,52 @@ pipeline {
             }
         }
     }
+}
+
+def withStepLogging(String stepName, Closure closure) {
+    def startTime = System.currentTimeMillis()
+    logToFile("┌─────────────────────────────────────")
+    logToFile("│ Starting: ${stepName}")
+    logToFile("│ Time: ${new Date(startTime).format('yyyy-MM-dd HH:mm:ss.SSS')}")
+    logToFile("└─────────────────────────────────────")
+    
+    try {
+        closure()
+        def endTime = System.currentTimeMillis()
+        def duration = endTime - startTime
+        logToFile("┌─────────────────────────────────────")
+        logToFile("│ Completed: ${stepName}")
+        logToFile("│ Status: SUCCESS")
+        logToFile("│ Duration: ${formatDuration(duration)}")
+        logToFile("│ End Time: ${new Date(endTime).format('yyyy-MM-dd HH:mm:ss.SSS')}")
+        logToFile("└─────────────────────────────────────")
+    } catch (Exception e) {
+        def endTime = System.currentTimeMillis()
+        def duration = endTime - startTime
+        logToFile("┌─────────────────────────────────────")
+        logToFile("│ Failed: ${stepName}")
+        logToFile("│ Status: FAILED")
+        logToFile("│ Duration: ${formatDuration(duration)}")
+        logToFile("│ Error: ${e.getMessage()}")
+        logToFile("│ End Time: ${new Date(endTime).format('yyyy-MM-dd HH:mm:ss.SSS')}")
+        logToFile("└─────────────────────────────────────")
+        throw e
+    }
+}
+
+def logToFile(String message) {
+    echo message
+    writeFile file: env.LOG_FILE, text: "${message}\n", encoding: 'UTF-8', append: true
+}
+
+def formatDuration(long milliseconds) {
+    def seconds = milliseconds / 1000
+    def minutes = seconds / 60
+    def hours = minutes / 60
+    
+    return sprintf("%02d:%02d:%02d.%03d", 
+        hours.intValue(), 
+        (minutes % 60).intValue(), 
+        (seconds % 60).intValue(),
+        milliseconds % 1000)
 }
