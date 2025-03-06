@@ -1,0 +1,66 @@
+pipeline {
+    agent {
+        docker {
+            image 'mcr.microsoft.com/playwright:v1.43.0-focal'
+            args '--ipc=host'
+        }
+    }
+
+    environment {
+        CI = 'true'
+        TEST_DIR = 'playwright-test'
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Run Playwright Tests') {
+            steps {
+                dir("${env.TEST_DIR}") {
+                    sh 'npm install'
+                    sh 'npx playwright install'
+                    sh 'npm run test'
+                }
+            }
+        }
+
+        stage('Publish Playwright Report') {
+            steps {
+                 dir("${env.TEST_DIR}") {
+                    sh 'npx playwright show-report'
+                }
+            }
+        }
+    }
+
+    post {
+         always {
+            dir("${env.TEST_DIR}") {
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    reportName: 'Playwright Report',
+                    reportTitles: ''
+                ])
+            }
+        }
+        failure {
+            script {
+                echo "Tests failed. Check the Playwright report."
+            }
+        }
+    }
+}
