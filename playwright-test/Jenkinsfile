@@ -4,7 +4,6 @@ pipeline {
             image 'mcr.microsoft.com/playwright'
             args '--ipc=host'
             reuseNode true
-            workdir '/workspace' 
         }
     }
 
