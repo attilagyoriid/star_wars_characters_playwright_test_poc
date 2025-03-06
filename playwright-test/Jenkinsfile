@@ -24,6 +24,17 @@ pipeline {
             }
         }
 
+         stage('Check Container') {
+            steps {
+                echo 'Check Container starts...'
+                script {
+                    sh 'cat /proc/1/cgroup || true'
+                    sh 'ls -la /.dockerenv || true'
+                }
+                echo 'Check Container ends...'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                     echo 'Install Dependencies starts...'
