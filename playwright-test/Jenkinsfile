@@ -38,9 +38,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                     echo 'Install Dependencies starts...'
-                    dir("${env.TEST_DIR}") {
+                  
                         sh 'npm ci'
-                    }
+             
                     echo 'Install Dependencies ends...'
                 
             }
@@ -49,10 +49,10 @@ pipeline {
         stage('Install Playwright') {
             steps {
                     echo 'Install Playwright starts...'
-                    dir("${env.TEST_DIR}") {
+                   
                         sh 'npm install'
                         sh 'npx playwright install'
-                     }
+                 
                      echo 'Install Playwright ends...'
                
             }
@@ -61,9 +61,9 @@ pipeline {
         stage('Run Playwright Tests') {
             steps {
                echo 'Run Playwright Tests starts...'
-                    dir("${env.TEST_DIR}") {
+                  
                         sh 'npm run test'
-                    }
+           
                echo 'Run Playwright Tests ends...'
             }
         }
@@ -71,9 +71,9 @@ pipeline {
         stage('Publish Playwright Report') {
             steps {
                echo 'Publish Playwright Report starts...'
-                    dir("${env.TEST_DIR}") {
+                   
                         sh 'npx playwright show-report'
-                    }
+                 
                 echo 'Publish Playwright Report ends...'
             }
         }
@@ -81,7 +81,7 @@ pipeline {
 
     post {
          always {
-            dir("${env.TEST_DIR}") {
+           
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -91,7 +91,7 @@ pipeline {
                     reportName: 'Playwright Report',
                     reportTitles: ''
                 ])
-            }
+     
         }
         failure {
             script {
