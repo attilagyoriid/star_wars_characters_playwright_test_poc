@@ -4,6 +4,7 @@ pipeline {
             image 'mcr.microsoft.com/playwright'
             args '--ipc=host'
             reuseNode true
+            workdir '/workspace' 
         }
     }
 
@@ -11,6 +12,7 @@ pipeline {
         HOME = '.'
         CI = 'true'
         TEST_DIR = 'playwright-test'
+        LOG_FILE = 'jenkins.log'
     }
 
     stages {
