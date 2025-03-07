@@ -18,7 +18,6 @@ pipeline {
         GITHUB_SSH_KEY = credentials('github credentials')  // Jenkins SSH key credentials
         REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
         BRANCH = 'main'
-        TEST_DIR = 'playwright-test'
         GIT_BRANCH = 'main'
     }
 
