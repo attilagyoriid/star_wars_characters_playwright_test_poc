@@ -1,17 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'mcr.microsoft.com/playwright:v1.40.0-focal'
-            args """
-                --ipc=host 
-                -e HOME=/root 
-                -e CI=true
-                -w /workspace
-                -v "${env.WORKSPACE.replace('\\', '/').replace('C:', '/c')}:/workspace"
-            """
-        }
-    }
-
+    
     environment {
         HOME = '.'  
         CI = 'true'
@@ -24,10 +12,14 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Print Environment Variables') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: "${env.GIT_BRANCH}"]],
-                          userRemoteConfigs: [[url: "${env.GIT_REPO_URL}"]]])
+                script {
+                    echo "Listing all Jenkins environment variables..."
+                    env.each { key, value ->
+                        echo "${key} = ${value}"
+                    }
+                }
             }
         }
         stage('List Files') {
