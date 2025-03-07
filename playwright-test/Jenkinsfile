@@ -6,6 +6,8 @@ pipeline {
                 --ipc=host 
                 -e HOME=/root 
                 -e CI=true
+                -w /workspace
+                -v ${WORKSPACE.replace('\\', '/')}:/workspace
             '''
         }
     }
@@ -16,8 +18,7 @@ pipeline {
         TEST_DIR = 'playwright-test'
         LOG_FILE = 'jenkins.log'
         GITHUB_SSH_KEY = credentials('github credentials')  // Jenkins SSH key credentials
-        REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
-        BRANCH = 'main'
+        GIT_REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
         GIT_BRANCH = 'main'
     }
 
