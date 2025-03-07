@@ -7,7 +7,7 @@ pipeline {
                 -e HOME=/root 
                 -e CI=true
                 -w /workspace
-                -v /${WORKSPACE.replace('\\', '/')}:/workspace
+                -v /${env.WORKSPACE.replace('\\', '/')}:/workspace
             """
         }
     }
@@ -20,6 +20,7 @@ pipeline {
         GITHUB_SSH_KEY = credentials('github credentials')
         GIT_REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
         GIT_BRANCH = 'main'
+        WORKSPACE = "${env.WORKSPACE}"
     }
 
     stages {
