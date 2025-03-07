@@ -7,7 +7,7 @@ pipeline {
                 -e HOME=/root 
                 -e CI=true
                 -w /workspace
-                -v "${env.WORKSPACE ?: '/workspace'}:/workspace"
+                -v "${env.WORKSPACE.replace('\\', '/').replace('C:', '/c')}:/workspace"
             """
         }
     }
