@@ -2,37 +2,35 @@ pipeline {
     agent {
         docker {
             image 'mcr.microsoft.com/playwright:v1.40.0-focal'
-             args '''
+            args """
                 --ipc=host 
                 -e HOME=/root 
                 -e CI=true
                 -w /workspace
-                -v ${WORKSPACE.replace('\\', '/')}:/workspace
-            '''
+                -v /${WORKSPACE.replace('\\', '/')}:/workspace
+            """
         }
     }
 
     environment {
-        HOME = '.'
+        HOME = '.'  
         CI = 'true'
         TEST_DIR = 'playwright-test'
         LOG_FILE = 'jenkins.log'
-        GITHUB_SSH_KEY = credentials('github credentials')  // Jenkins SSH key credentials
+        GITHUB_SSH_KEY = credentials('github credentials')
         GIT_REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
         GIT_BRANCH = 'main'
     }
 
     stages {
-         stage('Checkout') {
+        stage('Checkout') {
             steps {
-                // Clone the GitHub repository
                 checkout([$class: 'GitSCM', branches: [[name: "${env.GIT_BRANCH}"]],
                           userRemoteConfigs: [[url: "${env.GIT_REPO_URL}"]]])
             }
         }
-    stage('List Files') {
+        stage('List Files') {
             steps {
-                // List files in the repository directory
                 sh 'ls -la'
             }
         }
