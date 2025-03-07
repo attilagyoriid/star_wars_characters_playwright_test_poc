@@ -2,8 +2,11 @@ pipeline {
     agent {
         docker {
             image 'mcr.microsoft.com/playwright:v1.40.0-focal'
-            args '--ipc=host'
-            reuseNode true
+             args '''
+                --ipc=host 
+                -e HOME=/root 
+                -e CI=true
+            '''
         }
     }
 
@@ -12,91 +15,25 @@ pipeline {
         CI = 'true'
         TEST_DIR = 'playwright-test'
         LOG_FILE = 'jenkins.log'
+        GITHUB_SSH_KEY = credentials('github-ssh-key')  // Jenkins SSH key credentials
+        REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
+        BRANCH = 'main'
+        TEST_DIR = 'playwright-test'
+        GIT_BRANCH = 'main'
     }
 
     stages {
-        stage('Checkout Code') {
-            
+         stage('Checkout') {
             steps {
-                echo 'Checkout Code starts...'
-                git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
-                echo 'Checkout Code ends...' 
+                // Clone the GitHub repository
+                checkout([$class: 'GitSCM', branches: [[name: "${env.GIT_BRANCH}"]],
+                          userRemoteConfigs: [[url: "${env.GIT_REPO_URL}"]]])
             }
         }
-
-         stage('Check Container') {
+    stage('List Files') {
             steps {
-                echo 'Check Container starts...'
-                script {
-                    sh 'cat /proc/1/cgroup || true'
-                    sh 'ls -la /.dockerenv || true'
-                }
-                echo 'Check Container ends...'
+                // List files in the repository directory
+                sh 'ls -la'
             }
         }
-
-        stage('Install Dependencies') {
-            steps {
-                    echo 'Install Dependencies starts...'
-                  
-                        sh 'npm ci'
-             
-                    echo 'Install Dependencies ends...'
-                
-            }
-        }
-
-        stage('Install Playwright') {
-            steps {
-                    echo 'Install Playwright starts...'
-                   
-                        sh 'npm install'
-                        sh 'npx playwright install'
-                 
-                     echo 'Install Playwright ends...'
-               
-            }
-        }
-
-        stage('Run Playwright Tests') {
-            steps {
-               echo 'Run Playwright Tests starts...'
-                  
-                        sh 'npm run test'
-           
-               echo 'Run Playwright Tests ends...'
-            }
-        }
-
-        stage('Publish Playwright Report') {
-            steps {
-               echo 'Publish Playwright Report starts...'
-                   
-                        sh 'npx playwright show-report'
-                 
-                echo 'Publish Playwright Report ends...'
-            }
-        }
-    }
-
-    post {
-         always {
-           
-                publishHTML([
-                    allowMissing: false,
-                    alwaysLinkToLastBuild: true,
-                    keepAll: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Playwright Report',
-                    reportTitles: ''
-                ])
-     
-        }
-        failure {
-            script {
-                echo "Tests failed. Check the Playwright report."
-            }
-        }
-    }
 }
