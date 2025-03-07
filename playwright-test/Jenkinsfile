@@ -13,18 +13,12 @@ pipeline {
     stages {
         stage('Print Environment Variables') {
             steps {
-                script {
+                 script {
                     echo "Listing all Jenkins environment variables..."
-                    env.each { key, value ->
-                        echo "${key} = ${value}"
-                    }
+                    sh 'printenv'
                 }
             }
         }
-        stage('List Files') {
-            steps {
-                sh 'ls -la'
-            }
-        }
+      
     }
 }
