@@ -1,24 +1,12 @@
 pipeline {
-    agent any
-    environment {
-        HOME = '.'  
-        CI = 'true'
-        TEST_DIR = 'playwright-test'
-        LOG_FILE = 'jenkins.log'
-        GIT_REPO_URL = 'git@github.com:attilagyoriid/star_wars_characters_playwright_test_poc.git'
-        GIT_BRANCH = 'main'
-        WORKSPACE = "${env.WORKSPACE ?: '/workspace'}"
+    agent {
+        docker { image 'node:16.13.1-alpine' }
     }
-
     stages {
-        stage('Print Environment Variables') {
+        stage('Test') {
             steps {
-                 script {
-                    echo "Listing all Jenkins environment variables..."
-                    sh 'printenv'
-                }
+                sh 'node --version'
             }
         }
-      
     }
 }
