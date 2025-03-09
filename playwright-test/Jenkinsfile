@@ -30,11 +30,12 @@ pipeline {
         stage('List Working Directory') {
             steps {
                         script {
-                            echo 'List Working Directory starts...'
-                                sh 'cd playwright-test'
-                                sh 'ls -a'
-                  
-                            echo 'List Working Directory ends...'
+                            sh '''
+                                echo "List Working Directory starts..."
+                                cd "playwright-test"
+                                ls -a
+                                echo "List Working Directory ends..."
+                            '''
                         }
             }
         }
