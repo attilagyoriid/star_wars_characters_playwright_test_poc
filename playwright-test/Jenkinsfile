@@ -5,7 +5,6 @@ pipeline {
              args '''
                 --ipc=host 
                 -e CI=true
-               workDir "${env.TEST_DIR}"
             '''
         }
     }
@@ -21,72 +20,73 @@ pipeline {
         stage('Checkout Code') {
             
             steps {
-                echo 'Checkout Code starts...'
-                git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
-                echo 'Checkout Code ends...' 
+                script {
+                    echo 'Checkout Code starts...'
+                    git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
+                    echo 'Checkout Code ends...' 
+                }
             }
         }
 
-         stage('Check Container') {
-            steps {
-                echo 'Check Container starts...'
-                script {
-                    sh 'cat /proc/1/cgroup || true'
-                    sh 'ls -la /.dockerenv || true'
-                }
-                echo 'Check Container ends...'
-            }
-        }
 
          stage('List Working Directory') {
             steps {
                 script {
-                    // List contents of the working directory using the environment variable
-                    sh "ls -l ${env.TEST_DIR}"
-                }
+                    dir('/playwright-test') {
+                        sh "ls -a"
+                    }
+                 }
+
             }
         }
 
         stage('Install Dependencies') {
             steps {
+                script {
                     echo 'Install Dependencies starts...'
                   
                         sh 'npm ci'
              
                     echo 'Install Dependencies ends...'
+                }
                 
             }
         }
 
         stage('Install Playwright') {
             steps {
+                 script {
                     echo 'Install Playwright starts...'
                    
                         sh 'npm install'
                         sh 'npx playwright install'
                  
                      echo 'Install Playwright ends...'
-               
+               }
             }
         }
 
         stage('Run Playwright Tests') {
             steps {
-               echo 'Run Playwright Tests starts...'
-                  
-                        sh 'npm run test'
-           
-               echo 'Run Playwright Tests ends...'
+                script {
+                    echo 'Run Playwright Tests starts...'
+                        
+                                sh 'npm run test:api'
+                
+                    echo 'Run Playwright Tests ends...'
+               }
             }
         }
 
         stage('Publish Playwright Report') {
             steps {
-               echo 'Publish Playwright Report starts...'
-                   
-                        sh 'npx playwright show-report'
-                 
-                echo 'Publish Playwright Report ends...'
+                script {
+                    echo 'Publish Playwright Report starts...'
+                    
+                            sh 'npx playwright show-report'
+                    
+                    echo 'Publish Playwright Report ends...'
+                }
             }
         }
     }
