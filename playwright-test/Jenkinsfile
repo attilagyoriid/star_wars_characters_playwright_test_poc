@@ -30,7 +30,9 @@ pipeline {
             steps {
                         script {
                             echo 'List Working Directory starts...'
-                            sh 'ls -a'
+                            dir(env.TEST_DIR) {
+                                sh 'ls -a'
+                            }
                             echo 'List Working Directory ends...'
                         }
             }
@@ -40,7 +42,9 @@ pipeline {
             steps {
                 script {
                     echo 'Install Dependencies starts...'
-                    sh 'npm ci'
+                     dir(env.TEST_DIR) {
+                        sh 'npm ci'
+                     }
                     echo 'Install Dependencies ends...'
                 }
             }
@@ -50,8 +54,10 @@ pipeline {
             steps {
                 script {
                     echo 'Install Playwright starts...'
+                    dir(env.TEST_DIR) {
                         sh 'npm install'
                         sh 'npx playwright install'
+                    }
                     echo 'Install Playwright ends...'
                 }
             }
@@ -61,7 +67,9 @@ pipeline {
             steps {
                 script {
                     echo 'Run Playwright Tests starts...'
-                    sh 'npm run test:api'
+                    dir(env.TEST_DIR) {
+                        sh 'npm run test:api'
+                    }
                     echo 'Run Playwright Tests ends...'
                 }
             }
@@ -71,7 +79,9 @@ pipeline {
             steps {
                 script {
                     echo 'Publish Playwright Report starts...'
+                    dir(env.TEST_DIR) {
                             sh 'npx playwright show-report'
+                    }
                     echo 'Publish Playwright Report ends...'
                 }
             }
@@ -84,8 +94,8 @@ pipeline {
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
+                    reportDir: 'playwright-test/playwright-report',
+                    reportFiles: 'playwright-test/index.html',
                     reportName: 'Playwright Report',
                     reportTitles: ''
                 ])
