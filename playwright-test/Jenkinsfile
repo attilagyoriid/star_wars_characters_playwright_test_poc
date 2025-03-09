@@ -23,6 +23,7 @@ pipeline {
                     echo 'Checkout Code starts...'
                     git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
                     echo 'Checkout Code ends...'
+                    echo "Test Dir: ${env.TEST_DIR}"
                 }
             }
         }
@@ -30,7 +31,7 @@ pipeline {
             steps {
                         script {
                             echo 'List Working Directory starts...'
-                            dir(env.TEST_DIR) {
+                            dir("${env.TEST_DIR}") {
                                 sh 'ls -a'
                             }
                             echo 'List Working Directory ends...'
@@ -42,7 +43,7 @@ pipeline {
             steps {
                 script {
                     echo 'Install Dependencies starts...'
-                     dir(env.TEST_DIR) {
+                     dir("${env.TEST_DIR}") {
                         sh 'npm ci'
                      }
                     echo 'Install Dependencies ends...'
@@ -54,7 +55,7 @@ pipeline {
             steps {
                 script {
                     echo 'Install Playwright starts...'
-                    dir(env.TEST_DIR) {
+                    dir("${env.TEST_DIR}") {
                         sh 'npm install'
                         sh 'npx playwright install'
                     }
@@ -67,7 +68,7 @@ pipeline {
             steps {
                 script {
                     echo 'Run Playwright Tests starts...'
-                    dir(env.TEST_DIR) {
+                    dir("${env.TEST_DIR}") {
                         sh 'npm run test:api'
                     }
                     echo 'Run Playwright Tests ends...'
@@ -79,7 +80,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish Playwright Report starts...'
-                    dir(env.TEST_DIR) {
+                    dir("${env.TEST_DIR}") {
                             sh 'npx playwright show-report'
                     }
                     echo 'Publish Playwright Report ends...'
