@@ -31,9 +31,9 @@ pipeline {
             steps {
                         script {
                             echo 'List Working Directory starts...'
-                            dir("${env.TEST_DIR}") {
+                                sh 'cd playwright-test'
                                 sh 'ls -a'
-                            }
+                  
                             echo 'List Working Directory ends...'
                         }
             }
@@ -43,9 +43,9 @@ pipeline {
             steps {
                 script {
                     echo 'Install Dependencies starts...'
-                     dir("${env.TEST_DIR}") {
+                         sh 'cd playwright-test'
                         sh 'npm ci'
-                     }
+                     
                     echo 'Install Dependencies ends...'
                 }
             }
@@ -55,10 +55,10 @@ pipeline {
             steps {
                 script {
                     echo 'Install Playwright starts...'
-                    dir("${env.TEST_DIR}") {
+                         sh 'cd playwright-test'
                         sh 'npm install'
                         sh 'npx playwright install'
-                    }
+                 
                     echo 'Install Playwright ends...'
                 }
             }
@@ -68,9 +68,9 @@ pipeline {
             steps {
                 script {
                     echo 'Run Playwright Tests starts...'
-                    dir("${env.TEST_DIR}") {
+                         sh 'cd playwright-test'
                         sh 'npm run test:api'
-                    }
+                  
                     echo 'Run Playwright Tests ends...'
                 }
             }
@@ -80,9 +80,9 @@ pipeline {
             steps {
                 script {
                     echo 'Publish Playwright Report starts...'
-                    dir("${env.TEST_DIR}") {
+                         sh 'cd playwright-test'
                             sh 'npx playwright show-report'
-                    }
+                  
                     echo 'Publish Playwright Report ends...'
                 }
             }
