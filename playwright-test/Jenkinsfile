@@ -1,19 +1,113 @@
 pipeline {
     agent {
         docker {
-            image 'node:18'  // Run inside Node.js container
-            args '--user root'
+            image 'mcr.microsoft.com/playwright:v1.40.0-focal'
+             args '''
+                --ipc=host 
+                -e CI=true
+               workDir "${env.TEST_DIR}"
+            '''
         }
     }
+
+    environment {
+        HOME = '.'
+        CI = 'true'
+        TEST_DIR = '/playwright-test'
+        LOG_FILE = 'jenkins.log'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout Code') {
+            
             steps {
-                sh 'node -v'  // Check Node.js version
+                echo 'Checkout Code starts...'
+                git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
+                echo 'Checkout Code ends...' 
             }
         }
-        stage('Test') {
+
+         stage('Check Container') {
             steps {
-                sh 'echo Running tests...'  // Replace with real test commands
+                echo 'Check Container starts...'
+                script {
+                    sh 'cat /proc/1/cgroup || true'
+                    sh 'ls -la /.dockerenv || true'
+                }
+                echo 'Check Container ends...'
+            }
+        }
+
+         stage('List Working Directory') {
+            steps {
+                script {
+                    // List contents of the working directory using the environment variable
+                    sh "ls -l ${env.TEST_DIR}"
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                    echo 'Install Dependencies starts...'
+                  
+                        sh 'npm ci'
+             
+                    echo 'Install Dependencies ends...'
+                
+            }
+        }
+
+        stage('Install Playwright') {
+            steps {
+                    echo 'Install Playwright starts...'
+                   
+                        sh 'npm install'
+                        sh 'npx playwright install'
+                 
+                     echo 'Install Playwright ends...'
+               
+            }
+        }
+
+        stage('Run Playwright Tests') {
+            steps {
+               echo 'Run Playwright Tests starts...'
+                  
+                        sh 'npm run test'
+           
+               echo 'Run Playwright Tests ends...'
+            }
+        }
+
+        stage('Publish Playwright Report') {
+            steps {
+               echo 'Publish Playwright Report starts...'
+                   
+                        sh 'npx playwright show-report'
+                 
+                echo 'Publish Playwright Report ends...'
+            }
+        }
+    }
+
+    post {
+         always {
+           
+                publishHTML([
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: true,
+                    keepAll: true,
+                    reportDir: 'playwright-report',
+                    reportFiles: 'index.html',
+                    reportName: 'Playwright Report',
+                    reportTitles: ''
+                ])
+     
+        }
+        failure {
+            script {
+                echo "Tests failed. Check the Playwright report."
             }
         }
     }
