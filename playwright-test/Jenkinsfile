@@ -2,8 +2,8 @@ pipeline {
     agent {
         docker {
             image 'node:23.8.0'
-             args '''
-                --ipc=host 
+            args '''
+                --ipc=host
                 -e CI=true
             '''
         }
@@ -18,29 +18,21 @@ pipeline {
 
     stages {
         stage('Checkout Code') {
-            
             steps {
                 script {
                     echo 'Checkout Code starts...'
                     git branch: 'main', url: 'https://github.com/attilagyoriid/star_wars_characters_playwright_test_poc.git'
-                    echo 'Checkout Code ends...' 
+                    echo 'Checkout Code ends...'
                 }
             }
         }
-
-
-         stage('List Working Directory') {
+        stage('List Working Directory') {
             steps {
-                
-                    dir('/playwright-test') {
-                        
                         script {
                             echo 'List Working Directory starts...'
                             sh 'ls -a'
                             echo 'List Working Directory ends...'
                         }
-                 }
-
             }
         }
 
@@ -48,25 +40,20 @@ pipeline {
             steps {
                 script {
                     echo 'Install Dependencies starts...'
-                  
-                        sh 'npm ci'
-             
+                    sh 'npm ci'
                     echo 'Install Dependencies ends...'
                 }
-                
             }
         }
 
         stage('Install Playwright') {
             steps {
-                 script {
+                script {
                     echo 'Install Playwright starts...'
-                   
                         sh 'npm install'
                         sh 'npx playwright install'
-                 
-                     echo 'Install Playwright ends...'
-               }
+                    echo 'Install Playwright ends...'
+                }
             }
         }
 
@@ -74,11 +61,9 @@ pipeline {
             steps {
                 script {
                     echo 'Run Playwright Tests starts...'
-                        
-                                sh 'npm run test:api'
-                
+                    sh 'npm run test:api'
                     echo 'Run Playwright Tests ends...'
-               }
+                }
             }
         }
 
@@ -86,9 +71,7 @@ pipeline {
             steps {
                 script {
                     echo 'Publish Playwright Report starts...'
-                    
                             sh 'npx playwright show-report'
-                    
                     echo 'Publish Playwright Report ends...'
                 }
             }
@@ -96,8 +79,7 @@ pipeline {
     }
 
     post {
-         always {
-           
+        always {
                 publishHTML([
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
@@ -107,11 +89,10 @@ pipeline {
                     reportName: 'Playwright Report',
                     reportTitles: ''
                 ])
-     
         }
         failure {
             script {
-                echo "Tests failed. Check the Playwright report."
+                echo 'Tests failed. Check the Playwright report.'
             }
         }
     }
