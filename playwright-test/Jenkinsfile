@@ -90,10 +90,12 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'playwright-test/playwright-report',
-                    reportFiles: 'playwright-test/playwright-report/index.html',
+                    reportFiles: 'index.html',
                     reportName: 'Playwright Report',
-                    reportTitles: 'Playwright Report'
+                    reportTitles: 'Playwright Report',
+                    includes: '**/*'
                 ])
+                archiveArtifacts artifacts: 'playwright-test/playwright-report/**/*', fingerprint: true
         }
         failure {
             script {
