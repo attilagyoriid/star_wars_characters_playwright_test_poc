@@ -85,17 +85,21 @@ pipeline {
 
     post {
         always {
-                publishHTML([
+              archiveArtifacts artifacts: 'playwright-test/playwright-report/**/*', fingerprint: true
+              
+                publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
-                    reportDir: 'playwright-test/playwright-report',
+                    reportDir: 'playwright-report',
                     reportFiles: 'index.html',
-                    reportName: 'Playwright Report',
+                    reportName: 'Playwright Test Report',
                     reportTitles: 'Playwright Report',
-                    includes: '**/*'
+                    enableXHTML: true,
+                    includes: '**/*',
+                    escapeUnderscores: true
                 ])
-                archiveArtifacts artifacts: 'playwright-test/playwright-report/**/*', fingerprint: true
+              
         }
         failure {
             script {
