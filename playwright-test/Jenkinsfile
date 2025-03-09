@@ -90,9 +90,9 @@ pipeline {
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
                     reportDir: 'playwright-test/playwright-report',
-                    reportFiles: 'playwright-test/index.html',
+                    reportFiles: 'playwright-test/playwright-report/index.html',
                     reportName: 'Playwright Report',
-                    reportTitles: ''
+                    reportTitles: 'Playwright Report'
                 ])
         }
         failure {
