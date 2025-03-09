@@ -80,18 +80,7 @@ pipeline {
             }
         }
 
-        stage('Publish Playwright Report') {
-            steps {
-                script {
-                        sh '''
-                                echo "Publish Playwright Report starts..."
-                                cd "playwright-test"
-                                npx playwright show-report
-                                echo "Publish Playwright Report ends..."
-                            '''
-                }
-            }
-        }
+     
     }
 
     post {
