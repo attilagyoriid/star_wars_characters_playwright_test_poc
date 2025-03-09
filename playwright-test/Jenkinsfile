@@ -1,18 +1,19 @@
 pipeline {
     agent {
         docker {
-        image 'playwright/chromium:playwright-1.51.0'
-            args """
-                --ipc=host 
-                -e CI=true
-                -v /var/run/docker.sock:/var/run/docker.sock
-            """
-            }
+            image 'node:18'  // Run inside Node.js container
+            args '--user root'
+        }
     }
     stages {
+        stage('Build') {
+            steps {
+                sh 'node -v'  // Check Node.js version
+            }
+        }
         stage('Test') {
             steps {
-                sh 'node --version'
+                sh 'echo Running tests...'  // Replace with real test commands
             }
         }
     }
