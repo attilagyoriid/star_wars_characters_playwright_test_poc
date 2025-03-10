@@ -2,8 +2,8 @@ import { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class StarWarsHomePage extends BasePage {
-  readonly inputBoxFirstName: Locator;
-  readonly inputBoxLastName: Locator;
+  // readonly inputBoxFirstName: Locator;
+  // readonly inputBoxLastName: Locator;
   readonly inputBoxPhoneNumber: Locator;
   readonly inputBoxEmail: Locator;
   readonly inputSelectMonth: Locator;

@@ -3,8 +3,11 @@
   "cucumberautocomplete.strictGherkinCompletion": true,
   "jenkins.pipeline.linter.connector.url": "http://localhost:8080/pipeline-model-converter/validate",
   "jenkins.pipeline.linter.connector.user": "attilagyorid",
-  "jenkins.pipeline.linter.connector.token": "114d13f27172a073705ca02e85de90393b",
+  "jenkins.pipeline.linter.connector.token": "1191ce7bc716d8bf9b19e930e81bb001a3",
   "jenkins.pipeline.linter.jenkinsfile": "Jenkinsfile",
   "jenkins.pipeline.linter.connector.strictssl": false,
-  "files.eol": "\n"
+  "files.eol": "\n",
+
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }

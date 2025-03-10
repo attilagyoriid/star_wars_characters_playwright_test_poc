@@ -14,7 +14,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "types": ["node", "@cucumber/cucumber"],
+    "types": ["node"],
     "paths": {
       "@/*": ["./src/*"]
     }

@@ -100,7 +100,7 @@ export default function Home() {
                   {showImage &&
                     (getImageSrc(selectedCharacter.name) ? (
                       <Image
-                        src={getImageSrc(selectedCharacter.name)}
+                        src={getImageSrc(selectedCharacter.name) as string}
                         alt={selectedCharacter.name}
                         width={200}
                         height={200}

@@ -22,7 +22,10 @@ export class BasePage {
         timeout: timeout,
       });
     } catch (error) {
-      throw new Error(`Element not visible after ${timeout}ms: ${error.message}`);
+      if (error instanceof Error) {
+        throw new Error(`Element not visible after ${timeout}ms: ${error.message}`);
+      }
+      throw new Error(`Element not visible after ${timeout}ms: Unknown error occurred`);
     }
   }
   async waitForElementAndClick(locator: Locator, timeout = 30000) {
