@@ -12,12 +12,7 @@ module.exports = {
       'framework/hooks/hooks.ts', // Ensure this path is correct
     ],
     requireModule: ['ts-node/register'],
-    format: [
-      'pretty',
-      'html:test-results/cucumber-report.html',
-      'json:test-results/cucumber-report.json',
-      'rerun:@rerun.txt',
-    ],
+    format: ['html:test-results/cucumber-report.html', 'json:test-results/cucumber-report.json', 'rerun:@rerun.txt'],
     parallel: +process.env.npm_config_parallel || 3,
   },
   rerun: {
