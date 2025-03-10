@@ -67,14 +67,14 @@ pipeline {
             }
         }
 
-        stage('Run Playwright API Tests') {
+        stage('Run Playwright e2e Tests') {
             steps {
                 script {
                         sh '''
-                                echo "Run Playwright API Tests starts..."
+                                echo "Run Playwright e2e Tests starts..."
                                 cd "playwright-test"
-                                npm run test:api
-                                echo "Run Playwright API Tests ends..."
+                                npm run test:e2e --project="chrome" --headless=true
+                                echo "Run Playwright e2e Tests ends..."
                             '''
                 }
             }
@@ -85,16 +85,16 @@ pipeline {
 
     post {
         always {
-              archiveArtifacts artifacts: 'playwright-test/playwright-report/**/*', fingerprint: true
+              archiveArtifacts artifacts: 'playwright-test/test-results/**/*', fingerprint: true
               
                 publishHTML(target: [
                     allowMissing: false,
                     alwaysLinkToLastBuild: true,
                     keepAll: true,
-                    reportDir: 'playwright-test/playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Playwright API Test Report',
-                    reportTitles: 'Playwright API Report',
+                    reportDir: 'playwright-test/test-results',
+                    reportFiles: 'cucumber-report.html',
+                    reportName: 'Playwright Cucumber e2e Test Report',
+                    reportTitles: 'Playwright Cucumber e2e Report',
                     enableXHTML: true,
                     includes: '**/*',
                     escapeUnderscores: true
@@ -103,7 +103,7 @@ pipeline {
         }
         failure {
             script {
-                echo 'Tests failed. Check the Playwright report.'
+                echo 'Tests failed. Check the Playwright cucumber report.'
             }
         }
     }
