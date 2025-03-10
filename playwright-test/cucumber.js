@@ -13,7 +13,7 @@ module.exports = {
     ],
     requireModule: ['ts-node/register'],
     format: [
-      'progress-bar',
+      'pretty',
       'html:test-results/cucumber-report.html',
       'json:test-results/cucumber-report.json',
       'rerun:@rerun.txt',
