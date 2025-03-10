@@ -18,7 +18,7 @@ Feature: Registration Character Details e2e
 
     Examples:
     | CHARACTER_NAME                  |
-    | R2-D2                           |
+    | R2-D21                           |
     | C-3PO                           |
     | Luke Skywalker                  |
   
