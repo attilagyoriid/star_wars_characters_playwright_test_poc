@@ -38,17 +38,17 @@ Before(async function (this: CustomWorld, { pickle }) {
 });
 
 After(async function ({ pickle }) {
-  const path = `./test-results/trace/${pickle.id}.zip`;
+  const tracePath = `./test-results/trace/${pickle.id}.zip`;
   const img = await this.page.screenshot({ path: `./test-results/screenshots/${pickle.name}.png`, type: 'png' });
   const videoPath = await this.page.video().path();
 
-  await this.context.tracing.stop({ path: path });
+  await this.context.tracing.stop({ path: tracePath });
   await this.page.close();
   await this.context.close();
 
   await this.attach(img, 'image/png');
   await this.attach(fs.readFileSync(videoPath), 'video/webm');
-  await this.attach(fs.readFileSync(`${pickle.id}.zip`), 'application/zip');
+  await this.attach(fs.readFileSync(tracePath), 'application/zip');
 });
 
 AfterAll(async () => {
