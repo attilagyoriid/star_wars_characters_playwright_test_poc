@@ -67,14 +67,14 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Tests') {
+        stage('Run Playwright API Tests') {
             steps {
                 script {
                         sh '''
-                                echo "Run Playwright Tests starts..."
+                                echo "Run Playwright API Tests starts..."
                                 cd "playwright-test"
                                 npm run test:api
-                                echo "Run Playwright Tests ends..."
+                                echo "Run Playwright API Tests ends..."
                             '''
                 }
             }
@@ -93,8 +93,8 @@ pipeline {
                     keepAll: true,
                     reportDir: 'playwright-test/playwright-report',
                     reportFiles: 'index.html',
-                    reportName: 'Playwright Test Report',
-                    reportTitles: 'Playwright Report',
+                    reportName: 'Playwright API Test Report',
+                    reportTitles: 'Playwright API Report',
                     enableXHTML: true,
                     includes: '**/*',
                     escapeUnderscores: true

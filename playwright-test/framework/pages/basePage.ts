@@ -12,7 +12,7 @@ export class BasePage {
   }
 
   async visitPage(path = '/') {
-    await this.page.goto(process.env.npm_config_baseurl + path);
+    await this.page.goto((process.env.npm_config_baseurl || process.env.BASE_URL) + path);
   }
 
   async waitForElementVisible(locator: Locator, timeout = 8000) {

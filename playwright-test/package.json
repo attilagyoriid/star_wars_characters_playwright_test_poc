@@ -4,9 +4,10 @@
   "description": "Palaywright framework with page object model and cucumber",
   "main": "index.js",
   "scripts": {
-    "test:bdd:e2e": "cross-env ENV=staging HEADLESS=false cucumber-js test --tags @e2e || true",
-    "test:bdd:frontend": "cross-env ENV=staging HEADLESS=false cucumber-js test --tags @frontend || true",
-    "test:api": "playwright test --project=api-tests --workers=1 --retries=1"
+    "test:bdd:e2e": "cross-env ENV=staging BASE_URL=https://star-wars-characters-playwright-test-poc.vercel.app/ HEADLESS=false cucumber-js test --tags @e2e || true",
+    "test:bdd:frontend": "cross-env ENV=staging BASE_URL=https://star-wars-characters-playwright-test-poc.vercel.app/ cucumber-js HEADLESS=false cucumber-js test --tags @frontend || true",
+    "test:api": "playwright test --project=api-tests --workers=1 --retries=1",
+    "start:app": "npm run dev --prefix ../"
   },
   "keywords": [
     "playwright",
