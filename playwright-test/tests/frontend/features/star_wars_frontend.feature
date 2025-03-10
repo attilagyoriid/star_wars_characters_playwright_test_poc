@@ -21,7 +21,7 @@ Feature: Front-end Registration Character Details with mock back-end api
     Examples:
     | CHARACTER_NAME                  |
     | Mock-Owen Lars                  |
-    | Mock-Obi-Wan Kenobi 1           |
+    | Mock-Obi1-Wan Kenobi            |
     | Mock-R2-D2                      |
     | Mock-C-3PO                      |
     | Mock-Luke Skywalker             |
