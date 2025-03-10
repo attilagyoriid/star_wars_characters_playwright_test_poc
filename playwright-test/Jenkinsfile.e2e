@@ -17,6 +17,21 @@ pipeline {
     }
 
     stages {
+         stage('Configure CSP') {
+            steps {
+                script {
+                    // Set CSP for HTML reports
+                    System.setProperty("hudson.model.DirectoryBrowserSupport.CSP",
+                        "default-src 'self'; " +
+                        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+                        "style-src 'self' 'unsafe-inline'; " +
+                        "img-src 'self' data: https:; " +
+                        "media-src 'self' data: https:; " +
+                        "font-src 'self' data: https:;"
+                    )
+                }
+            }
+        }
         stage('Checkout Code') {
             steps {
                 script {
