@@ -47,6 +47,7 @@ pipeline {
                                 echo "Install Dependencies starts..."
                                 cd "playwright-test"
                                 npm ci
+                                apt-get update && apt-get install -y ffmpeg
                                 echo "Install Dependencies ends..."
                             '''
                 }
