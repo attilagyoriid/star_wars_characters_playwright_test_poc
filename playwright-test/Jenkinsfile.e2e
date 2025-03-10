@@ -73,7 +73,7 @@ pipeline {
                         sh '''
                                 echo "Run Playwright e2e Tests starts..."
                                 cd "playwright-test"
-                                npm run test:e2e --project="chrome" --headless=true
+                                npm run test:bdd:e2e --project="chrome" --headless=true
                                 echo "Run Playwright e2e Tests ends..."
                             '''
                 }
@@ -95,7 +95,6 @@ pipeline {
                     reportFiles: 'cucumber-report.html',
                     reportName: 'Playwright Cucumber e2e Test Report',
                     reportTitles: 'Playwright Cucumber e2e Report',
-                    enableXHTML: true,
                     includes: '**/*',
                     escapeUnderscores: true
                 ])

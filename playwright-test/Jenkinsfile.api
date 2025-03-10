@@ -95,7 +95,6 @@ pipeline {
                     reportFiles: 'index.html',
                     reportName: 'Playwright API Test Report',
                     reportTitles: 'Playwright API Report',
-                    enableXHTML: true,
                     includes: '**/*',
                     escapeUnderscores: true
                 ])
