@@ -48,7 +48,10 @@ After(async function ({ pickle }) {
 
   await this.attach(img, 'image/png');
   await this.attach(fs.readFileSync(videoPath), 'video/webm');
-  await this.attach(fs.readFileSync(tracePath), 'application/zip');
+  await this.attach(fs.readFileSync(videoPath), {
+    mediaType: 'application/zip',
+    fileName: `${pickle.id}-trace.zip`,
+  });
 });
 
 AfterAll(async () => {
