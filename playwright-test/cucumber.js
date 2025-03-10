@@ -30,6 +30,7 @@ module.exports = {
       'progress-bar',
       'html:test-results/cucumber-report.html',
       'json:test-results/cucumber-report.json',
+      'junit:test-results/junit-report.xml',
       'rerun:@rerun.txt',
     ],
     parallel: 2,
