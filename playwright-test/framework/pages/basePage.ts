@@ -12,6 +12,7 @@ export class BasePage {
   }
 
   async visitPage(path = '/') {
+    console.log(`Visiting page: ${process.env.npm_config_baseurl || process.env.BASE_URL}`);
     await this.page.goto((process.env.npm_config_baseurl || process.env.BASE_URL) + path);
   }
 

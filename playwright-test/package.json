@@ -4,10 +4,13 @@
   "description": "Palaywright framework with page object model and cucumber",
   "main": "index.js",
   "scripts": {
-    "test:bdd:e2e": "cross-env ENV=staging BASE_URL=https://star-wars-characters-playwright-test-poc.vercel.app/ HEADLESS=false cucumber-js test --tags @e2e || true",
+    "test:bdd:e2e": "cross-env ENV=staging BASE_URL=https://star-wars-characters-playwright-test-poc.vercel.app/ HEADLESS=false cucumber-js test --tags @DE-13 || true",
     "test:bdd:frontend": "cross-env ENV=staging BASE_URL=https://star-wars-characters-playwright-test-poc.vercel.app/ cucumber-js HEADLESS=false cucumber-js test --tags @frontend || true",
     "test:api": "playwright test --project=api-tests --workers=1 --retries=1",
-    "start:app": "npm run dev --prefix ../"
+    "test:bdd:upload-results": "ts-node framework/service/uploadBDDTestResults.ts",
+    "start:app": "npm run dev --prefix ../",
+    "test:bdd:retrieve-xray-tests": "ts-node ./framework/service/xray/downloadXrayTests.ts",
+    "upload:xray": "ts-node ./framework/service/xray/uploadToXray.ts"
   },
   "keywords": [
     "playwright",
@@ -36,5 +39,13 @@
     "start-server-and-test": "^2.0.10",
     "ts-node": "^10.9.2",
     "winston": "^3.17.0"
+  },
+  "dependencies": {
+    "@cucumber/gherkin": "^32.0.0",
+    "@cucumber/gherkin-utils": "^9.2.0",
+    "axios": "^1.8.2",
+    "fs": "^0.0.1-security",
+    "gherkin-formatter": "^1.2.2",
+    "gherkin-parse": "^1.0.12"
   }
 }

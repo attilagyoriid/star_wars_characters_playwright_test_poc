@@ -24,4 +24,4 @@ Feature: Front-end Registration Character Details with mock back-end api
     | Mock-Obi-Wan Kenobi             |
     | Mock-R2-D2                      |
     | Mock-C-3PO                      |
-    | Mock-Luke Skywalker             |
+    | Mock-Luke Skywalker             | 
